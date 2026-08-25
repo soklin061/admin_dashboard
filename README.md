@@ -7,57 +7,51 @@ A modular Laravel starter boilerplate featuring role-based access control (RBAC)
 ## 📁 Project Structure
 
 ```text
-app/
-├── Http/
-│   ├── Controllers/
-│   │   ├── Admin/
-│   │   │   ├── ActivityLogController.php   # System audit & event log viewer
-│   │   │   ├── DashboardController.php      # Main admin overview & metrics
-│   │   │   ├── NotificationController.php  # Admin alert & notification management
-│   │   │   ├── PermissionController.php    # Granular permission management
-│   │   │   ├── RoleController.php          # Role definitions & capability mapping
-│   │   │   ├── SettingController.php       # Dynamic application configuration
-│   │   │   └── UserController.php          # User lifecycle & role assignments
-│   │   └── ProfileController.php           # Account profile management (Breeze)
+Laravel_Structure/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── Controller.php                    <- Base Controller (Extends BaseController for $this->middleware())
+│   │   │   ├── LanguageController.php            <- Switches app locale (en / kh)
+│   │   │   └── Admin/
+│   │   │       ├── DashboardController.php      <- Admin KPI stats & recent activity
+│   │   │       ├── UserController.php           <- User CRUD & role assignment
+│   │   │       ├── RoleController.php           <- Role CRUD & permission binding
+│   │   │       ├── PermissionController.php     <- Permission CRUD
+│   │   │       ├── SettingController.php        <- System settings
+│   │   │       ├── NotificationController.php   <- Alerts & notifications
+│   │   │       └── ActivityLogController.php    <- Audit & activity trail
+│   │   └── Middleware/
+│   │       └── SetLocale.php                    <- Dynamic session locale handler
+│   ├── Models/
+│   │   ├── User.php                             <- HasRoles & HasApiTokens traits
+│   │   └── Setting.php                          <- Key-value setting model
 │   └── Providers/
-│       └── AppServiceProvider.php
-└── Models/
-    ├── Setting.php
-    └── User.php
-
-database/
-└── migrations/
-    ├── 0001_01_01_000000_create_users_table.php
-    ├── create_activity_log_table.php       # Spatie Activitylog migration
-    ├── create_permission_tables.php        # Spatie Permission migration
-    └── create_settings_table.php
-
-resources/
-└── views/
-    ├── admin/
-    │   ├── activity-logs/
-    │   │   └── index.blade.php
-    │   ├── dashboard.blade.php
-    │   ├── notifications/
-    │   │   └── index.blade.php
-    │   ├── permissions/
-    │   │   ├── create.blade.php
-    │   │   └── index.blade.php
-    │   ├── roles/
-    │   │   ├── create.blade.php
-    │   │   ├── edit.blade.php
-    │   │   └── index.blade.php
-    │   ├── settings/
-    │   │   └── edit.blade.php
-    │   └── users/
-    │       ├── create.blade.php
-    │       ├── edit.blade.php
-    │       └── index.blade.php
-    ├── layouts/
-    │   ├── app.blade.php
-    │   └── navigation.blade.php
-    └── profile/
-        └── edit.blade.php
-
-routes/
-└── web.php                                 # Admin route group & auth middleware definitions
+│       └── AppServiceProvider.php               <- Gate::before super-admin bypass
+│
+├── database/
+│   └── seeders/
+│       ├── DatabaseSeeder.php                   <- Main seeder entry point
+│       ├── RolesAndPermissionsSeeder.php        <- Spatie permissions & roles setup
+│       └── AdminUserSeeder.php                  <- Initial super admin account
+│
+├── lang/
+│   ├── en.json                                  <- English translation dictionary
+│   └── kh.json                                  <- Khmer translation dictionary
+│
+├── resources/
+│   └── views/
+│       ├── layouts/
+│       │   ├── app.blade.php                    <- Main app shell (Lucide icons CDN)
+│       │   ├── sidebar.blade.php                <- Dynamic permission-guarded sidebar
+│       │   └── navigation.blade.php             <- Top navbar & language switcher
+│       └── admin/
+│           ├── dashboard.blade.php              <- Admin dashboard metrics
+│           ├── users/                           <- index, show, create, edit
+│           ├── roles/                           <- index, show, create, edit
+│           ├── permissions/                     <- index, create, edit
+│           ├── settings/                        <- edit
+│           └── activity-logs/                   <- index
+│
+└── routes/
+    └── web.php                                  <- Resource routes & locale switchers
