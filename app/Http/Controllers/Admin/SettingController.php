@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:view-settings|edit-settings|manage-settings', ['only' => ['edit']]);
+        $this->middleware('can:edit-settings|update-settings|manage-settings', ['only' => ['update']]);
+    }
+
     public function edit()
     {
         // Fetch all settings and index by key

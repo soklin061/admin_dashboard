@@ -11,10 +11,26 @@ use Illuminate\Validation\Rules;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:view-users|manage-users', ['only' => ['index']]);
+        $this->middleware('can:show-users|view-users|manage-users', ['only' => ['show']]);
+        $this->middleware('can:create-users|manage-users', ['only' => ['create', 'store']]);
+        $this->middleware('can:edit-users|update-users|manage-users', ['only' => ['edit', 'update']]);
+        $this->middleware('can:delete-users|manage-users', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $users = User::with('roles')->paginate(10);
         return view('admin.users.index', compact('users'));
+    }
+
+    public function show(User $user)
+    {
+        $user->load(['roles.permissions', 'permissions']);
+        return view('admin.users.show', compact('user'));
     }
 
     public function create()

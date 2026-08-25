@@ -14,26 +14,73 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
+        // Remove old space-based permissions
+        Permission::where('name', 'LIKE', '% %')->delete();
+
+        // Create CRUD permissions
         $permissions = [
-            'manage users',
-            'manage roles',
-            'manage permissions',
-            'manage settings',
-            'view logs',
+            // User permissions
+            'view-users',
+            'show-users',
+            'create-users',
+            'edit-users',
+            'update-users',
+            'delete-users',
+            'manage-users',
+
+            // Role permissions
+            'view-roles',
+            'show-roles',
+            'create-roles',
+            'edit-roles',
+            'update-roles',
+            'delete-roles',
+            'manage-roles',
+
+            // Permission permissions
+            'view-permissions',
+            'show-permissions',
+            'create-permissions',
+            'edit-permissions',
+            'update-permissions',
+            'delete-permissions',
+            'manage-permissions',
+
+            // Setting permissions
+            'view-settings',
+            'show-settings',
+            'edit-settings',
+            'update-settings',
+            'manage-settings',
+
+            // Log permissions
+            'view-logs',
+            'show-logs',
         ];
 
         foreach ($permissions as $permission) {
             Permission::findOrCreate($permission, 'web');
         }
 
-        // Create roles and assign existing permissions
+        // Create roles and assign permissions
         $adminRole = Role::findOrCreate('Admin', 'web');
-        $adminRole->givePermissionTo(Permission::all());
+        $adminRole->syncPermissions(Permission::all());
 
         $managerRole = Role::findOrCreate('Manager', 'web');
-        $managerRole->givePermissionTo(['manage users', 'view logs']);
+        $managerRole->syncPermissions([
+            'view-users',
+            'show-users',
+            'create-users',
+            'edit-users',
+            'update-users',
+            'view-logs',
+            'show-logs',
+        ]);
 
         $userRole = Role::findOrCreate('User', 'web');
+        $userRole->syncPermissions([
+            'view-users',
+            'show-users',
+        ]);
     }
 }

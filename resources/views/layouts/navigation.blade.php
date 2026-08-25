@@ -15,18 +15,26 @@
                     <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @can('manage users')
                     <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                         {{ __('Users') }}
                     </x-nav-link>
+                    @endcan
+                    @can('manage roles')
                     <x-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.*')">
                         {{ __('Roles') }}
                     </x-nav-link>
+                    @endcan
+                    @can('manage permissions')
                     <x-nav-link :href="route('admin.permissions.index')" :active="request()->routeIs('admin.permissions.*')">
                         {{ __('Permissions') }}
                     </x-nav-link>
+                    @endcan
+                    @can('manage settings')
                     <x-nav-link :href="route('admin.settings.edit')" :active="request()->routeIs('admin.settings.*')">
                         {{ __('Settings') }}
                     </x-nav-link>
+                    @endcan
                     <x-nav-link :href="route('admin.notifications.index')" :active="request()->routeIs('admin.notifications.*')">
                         {{ __('Notifications') }}
                         @if(Auth::user()->unreadNotifications->count() > 0)
@@ -35,9 +43,11 @@
                             </span>
                         @endif
                     </x-nav-link>
+                    @can('view logs')
                     <x-nav-link :href="route('admin.activity-logs.index')" :active="request()->routeIs('admin.activity-logs.*')">
                         {{ __('Activity Logs') }}
                     </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -93,18 +103,26 @@
             <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @can('manage users')
             <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                 {{ __('Users') }}
             </x-responsive-nav-link>
+            @endcan
+            @can('manage roles')
             <x-responsive-nav-link :href="route('admin.roles.index')" :active="request()->routeIs('admin.roles.*')">
                 {{ __('Roles') }}
             </x-responsive-nav-link>
+            @endcan
+            @can('manage permissions')
             <x-responsive-nav-link :href="route('admin.permissions.index')" :active="request()->routeIs('admin.permissions.*')">
                 {{ __('Permissions') }}
             </x-responsive-nav-link>
+            @endcan
+            @can('manage settings')
             <x-responsive-nav-link :href="route('admin.settings.edit')" :active="request()->routeIs('admin.settings.*')">
                 {{ __('Settings') }}
             </x-responsive-nav-link>
+            @endcan
             <x-responsive-nav-link :href="route('admin.notifications.index')" :active="request()->routeIs('admin.notifications.*')">
                 {{ __('Notifications') }}
                 @if(Auth::user()->unreadNotifications->count() > 0)
@@ -113,9 +131,11 @@
                     </span>
                 @endif
             </x-responsive-nav-link>
+            @can('view logs')
             <x-responsive-nav-link :href="route('admin.activity-logs.index')" :active="request()->routeIs('admin.activity-logs.*')">
                 {{ __('Activity Logs') }}
             </x-responsive-nav-link>
+            @endcan
         </div>
 
         <!-- Responsive Settings Options -->

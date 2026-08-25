@@ -13,6 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        
+        <!-- Lucide Icons -->
+        <script src="https://unpkg.com/lucide@latest"></script>
     </head>
     <body class="font-sans antialiased h-full">
         <div class="flex h-screen overflow-hidden" x-data="{ mobileSidebarOpen: false }">
@@ -58,7 +61,38 @@
                     <div class="flex-1"></div>
 
                     <!-- User Actions -->
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-3 sm:space-x-4">
+                        <!-- Language Switcher Dropdown -->
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button class="inline-flex items-center px-3 py-1.5 border border-gray-200 text-xs font-semibold rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none transition shadow-sm">
+                                    <span class="mr-1.5 text-base">{{ App::getLocale() == 'kh' ? '🇰🇭' : '🇬🇧' }}</span>
+                                    <span class="font-medium text-gray-800">{{ App::getLocale() == 'kh' ? 'ភាសាខ្មែរ' : 'English' }}</span>
+                                    <svg class="ms-1.5 h-4 w-4 fill-current text-gray-400" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </x-slot>
+
+                            <x-slot name="content">
+                                <x-dropdown-link :href="route('lang.switch', 'en')" class="flex items-center space-x-2 text-xs font-medium">
+                                    <span class="text-base">🇬🇧</span>
+                                    <span class="flex-1">English (EN)</span>
+                                    @if(App::getLocale() == 'en')
+                                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    @endif
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('lang.switch', 'kh')" class="flex items-center space-x-2 text-xs font-medium">
+                                    <span class="text-base">🇰🇭</span>
+                                    <span class="flex-1">ភាសាខ្មែរ (KH)</span>
+                                    @if(App::getLocale() == 'kh')
+                                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                                    @endif
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+
                         <!-- Profile Dropdown -->
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
@@ -109,6 +143,14 @@
         
         <!-- Toast Alerts -->
         <x-toast />
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            });
+        </script>
     </body>
 </html>
 

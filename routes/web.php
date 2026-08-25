@@ -7,6 +7,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('lang/{locale}', [App\Http\Controllers\LanguageController::class, 'switchLanguage'])->name('lang.switch');
+
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -15,14 +17,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Dashboard
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-    // Users CRUD
+    // Resource Routes
     Route::resource('users', App\Http\Controllers\Admin\UserController::class);
-
-    // Roles CRUD
-    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class)->except(['show']);
-
-    // Permissions CRUD
-    Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('roles', App\Http\Controllers\Admin\RoleController::class);
+    Route::resource('permissions', App\Http\Controllers\Admin\PermissionController::class)->except(['show']);
 
     // Settings
     Route::get('settings', [App\Http\Controllers\Admin\SettingController::class, 'edit'])->name('settings.edit');

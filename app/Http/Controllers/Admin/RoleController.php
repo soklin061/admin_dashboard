@@ -9,10 +9,28 @@ use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('can:view-roles|manage-roles', ['only' => ['index']]);
+        $this->middleware('can:show-roles|view-roles|manage-roles', ['only' => ['show']]);
+        $this->middleware('can:create-roles|manage-roles', ['only' => ['create', 'store']]);
+        $this->middleware('can:edit-roles|update-roles|manage-roles', ['only' => ['edit', 'update']]);
+        $this->middleware('can:delete-roles|manage-roles', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $roles = Role::with('permissions')->paginate(10);
-        return view('admin.roles.index', compact('roles'));
+        $totalPermissionsCount = Permission::count();
+        return view('admin.roles.index', compact('roles', 'totalPermissionsCount'));
+    }
+
+    public function show(Role $role)
+    {
+        $role->load(['permissions', 'users']);
+        $totalPermissionsCount = Permission::count();
+        return view('admin.roles.show', compact('role', 'totalPermissionsCount'));
     }
 
     public function create()
