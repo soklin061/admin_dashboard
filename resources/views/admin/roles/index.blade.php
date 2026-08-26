@@ -7,12 +7,12 @@
                 </h2>
                 <p class="text-xs text-gray-500 mt-1">{{ __('Configure role capabilities and permissions assigned to users.') }}</p>
             </div>
-            @canany(['create-roles', 'manage-roles'])
+            @can(['create-roles', 'manage-roles'])
             <a href="{{ route('admin.roles.create') }}" class="inline-flex items-center px-4 py-2.5 bg-indigo-600 border border-transparent rounded-xl font-semibold text-xs text-white uppercase tracking-wider hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition shadow-sm">
                 <i data-lucide="plus" class="w-4 h-4 mr-1.5"></i>
                 {{ __('Add New Role') }}
             </a>
-            @endcanany
+            @endcan
         </div>
     </x-slot>
 
@@ -24,11 +24,11 @@
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-slate-50/80 border-b border-gray-200">
                                 <tr>
-                                    <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ __('Role Name') }}</th>
+                                    <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ __('Name') }}</th>
                                     <th class="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">{{ __('Granted Permissions') }}</th>
-                                    @canany(['edit-roles', 'update-roles', 'delete-roles', 'manage-roles'])
+                                    @can(['edit-roles', 'update-roles', 'delete-roles', 'manage-roles'])
                                     <th class="px-6 py-4 text-right text-xs font-bold text-slate-500 uppercase tracking-wider">{{ __('Actions') }}</th>
-                                    @endcanany
+                                    @endcan
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-100">
@@ -68,12 +68,12 @@
                                                         <i data-lucide="check" class="w-3.5 h-3.5 mr-1.5 text-emerald-600"></i>
                                                         {{ __('Full Access') }} ({{ $role->permissions->count() }})
                                                     </span>
-                                                    @canany(['show-roles', 'view-roles', 'manage-roles'])
+                                                    @can(['show-roles', 'view-roles', 'manage-roles'])
                                                     <a href="{{ route('admin.roles.show', $role->id) }}" class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-600 hover:text-white rounded-xl transition duration-150 border border-indigo-100 shadow-2xs">
                                                         <i data-lucide="eye" class="w-3.5 h-3.5 mr-1.5"></i>
                                                         {{ __('View Details') }}
                                                     </a>
-                                                    @endcanany
+                                                    @endcan
                                                 </div>
                                             @else
                                                 <div class="flex items-center flex-wrap gap-2">
@@ -82,26 +82,26 @@
                                                             {{ $groupName }}: <span class="ml-1.5 font-bold text-indigo-900">{{ $groupPerms->count() }}</span>
                                                         </span>
                                                     @endforeach
-                                                    @canany(['show-roles', 'view-roles', 'manage-roles'])
+                                                    @can(['show-roles', 'view-roles', 'manage-roles'])
                                                     <a href="{{ route('admin.roles.show', $role->id) }}" class="inline-flex items-center px-3.5 py-1.5 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-600 hover:text-white rounded-xl transition duration-150 border border-indigo-100 shadow-2xs">
                                                         <i data-lucide="eye" class="w-3.5 h-3.5 mr-1.5"></i>
                                                         {{ __('View Details') }}
                                                     </a>
-                                                    @endcanany
+                                                    @endcan
                                                 </div>
                                             @endif
                                         </td>
-                                        @canany(['edit-roles', 'update-roles', 'delete-roles', 'manage-roles'])
+                                        @can(['edit-roles', 'update-roles', 'delete-roles', 'manage-roles'])
                                         <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                             <div class="flex items-center justify-end space-x-2">
-                                                @canany(['edit-roles', 'update-roles', 'manage-roles'])
+                                                @can(['edit-roles', 'update-roles', 'manage-roles'])
                                                 <a href="{{ route('admin.roles.edit', $role->id) }}" class="inline-flex items-center px-3 py-1.5 bg-indigo-50 text-indigo-700 hover:bg-indigo-600 hover:text-white border border-indigo-100 rounded-xl text-xs font-semibold transition duration-150 shadow-2xs">
                                                     <i data-lucide="edit-3" class="w-3.5 h-3.5 mr-1"></i>
                                                     {{ __('Edit') }}
                                                 </a>
-                                                @endcanany
+                                                @endcan
                                                 
-                                                @canany(['delete-roles', 'manage-roles'])
+                                                @can(['delete-roles', 'manage-roles'])
                                                 <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" class="inline-block delete-form" data-confirm-title="Delete Role" data-confirm-message="Are you sure you want to delete the role '{{ $role->name }}'? This action cannot be undone.">
                                                     @csrf
                                                     @method('DELETE')
@@ -110,10 +110,10 @@
                                                         {{ __('Delete') }}
                                                     </button>
                                                 </form>
-                                                @endcanany
+                                                @endcan
                                             </div>
                                         </td>
-                                        @endcanany
+                                        @endcan
                                     </tr>
                                 @empty
                                     <tr>
